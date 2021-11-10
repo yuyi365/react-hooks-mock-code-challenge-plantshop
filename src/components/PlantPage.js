@@ -1,14 +1,39 @@
-import React from "react";
+import React, {useState} from "react";
 import NewPlantForm from "./NewPlantForm";
 import PlantList from "./PlantList";
 import Search from "./Search";
 
-function PlantPage() {
+const PlantPage = ({allPlants, setAllPlants}) => {
+
+  const [search, setSearch] = useState("");
+
+  const handleSearch = (text) => {
+    setSearch(text);
+  }
+
+  const plantsToDisplay = allPlants.filter((plant) => {
+    return plant.name.toLowerCase().includes(search.toLowerCase());
+  })
+
+  const addPlant = (newPlant) => {
+    setAllPlants([
+      ...allPlants,
+      newPlant
+    ]);
+  }
+
   return (
     <main>
-      <NewPlantForm />
-      <Search />
-      <PlantList />
+      <NewPlantForm 
+        addPlant={addPlant}
+      />
+      <Search
+        handleSearch={handleSearch}
+      />
+      <PlantList 
+        allPlants={plantsToDisplay}
+        setAllPlants={setAllPlants}
+      />
     </main>
   );
 }
